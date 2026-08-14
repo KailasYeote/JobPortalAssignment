@@ -39,7 +39,9 @@ export default function Login() {
         }
     };
 
-
+    const handleLogout = () => {
+        dispatch(logout());
+    };
 
     if (user) {
         return (
