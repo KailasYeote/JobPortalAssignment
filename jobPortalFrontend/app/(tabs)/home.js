@@ -1,4 +1,4 @@
-import React from "react";
+
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import GetJobs from "../../components/GetJobs";
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     },
     header: {
         paddingTop: 20,
-        paddingBlock: 5,
+        paddingVertical: 5,
         height: 60,
         paddingHorizontal: 20,
         flexDirection: "row",
