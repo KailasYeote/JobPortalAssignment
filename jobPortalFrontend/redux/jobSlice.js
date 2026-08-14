@@ -34,14 +34,17 @@ export const submitApplication = createAsyncThunk("/submitApplication", async (d
 const jobSlice = createSlice({
     name: "job",
     initialState: {
-        job: null,
+        job: [],
         status: "idle",
         error: null,
     },
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(saveJobs.fulfilled, (state, action) => {
-            state.job = action.payload
+            // After posting a job, reload the jobs list
+            if (Array.isArray(action.payload)) {
+                state.job = action.payload;
+            }
             state.status = "succeeded"
         })
         builder.addCase(saveJobs.rejected, (state, action) => {
@@ -52,7 +55,9 @@ const jobSlice = createSlice({
             state.status = "loading"
         })
         builder.addCase(getAllJobs.fulfilled, (state, action) => {
-            state.job = action.payload
+            // API may return an array directly or { jobs: [...] }
+            const payload = action.payload;
+            state.job = Array.isArray(payload) ? payload : (Array.isArray(payload?.jobs) ? payload.jobs : []);
             state.status = "succeeded"
         })
         builder.addCase(getAllJobs.rejected, (state, action) => {

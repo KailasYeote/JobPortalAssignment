@@ -10,7 +10,7 @@ import {
     KeyboardAvoidingView,
     Platform,
 } from "react-native";
-import { saveJobs } from "../redux/jobSlice";
+import { saveJobs, getAllJobs } from "../redux/jobSlice";
 import { useDispatch } from "react-redux";
 import { useRouter } from "expo-router";
 
@@ -55,10 +55,21 @@ export default function PostJob() {
 
             const response = await dispatch(saveJobs(jobData))
 
-            console.log("Job posted:", response.data);
+            console.log("Job posted:", response.payload);
 
-            Alert.alert("Success", "Job posted successfully");
-            router.replace("/(tabs)/home");
+            if (response.meta?.requestStatus === "rejected") {
+                throw new Error(response.payload || "Failed to post job");
+            }
+
+            Alert.alert("Success", "Job posted successfully", [
+                {
+                    text: "OK",
+                    onPress: () => {
+                        dispatch(getAllJobs());
+                        router.replace("/(tabs)/home");
+                    },
+                },
+            ]);
 
             setJobTitle("");
             setCompanyName("");

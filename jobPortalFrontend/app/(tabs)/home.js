@@ -12,7 +12,9 @@ export default function Home() {
 
     const handleLogout = () => {
         dispatch(logout());
-        router.replace("/login");
+        setTimeout(() => {
+            router.replace("/login");
+        }, 0);
     };
 
     return (
